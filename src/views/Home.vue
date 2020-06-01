@@ -11,7 +11,6 @@
                 <div class="d-flex justify-content-center m-2">
                     <span>
                         &copy; Wrona Przemyslaw
-                        {{cityid}}
                     </span>
                 </div>
             </div>

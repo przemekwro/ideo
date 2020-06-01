@@ -1,10 +1,10 @@
 <template>
     <div id="app" class="mb-5">
         <div class="row d-flex justify-content-end nav" style="width:100%">
-            <router-link class="m-2" v-if="accessToken!=null" to="/"> Login</router-link>
-            <router-link class="m-2" v-if="accessToken==null" to="/search"> Search</router-link>
-            <router-link class="m-2" v-if="accessToken==null" to="/home"> Home</router-link>
-            <a href="#" v-if="accessToken==null" @click="logout" class="m-2"> Logout </a>
+            <router-link class="m-2" v-if="!accessToken" to="/login"> Login</router-link>
+            <router-link class="m-2" v-if="accessToken" to="/search"> Search</router-link>
+            <router-link class="m-2" v-if="accessToken" to="/"> Home</router-link>
+            <a href="#" v-if="accessToken" @click="logout" class="m-2"> Logout {{username}} </a>
         </div>
         <div class="container d-flex justify-content-center">
             <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut" mode="out-in">
@@ -16,16 +16,22 @@
 
 <script>
     import state from '@/store'
-    import {mapState} from 'vuex'
     export default {
         name: 'App',
-        computed:mapState(['accessToken'])
-        ,
+        computed:{
+            accessToken(){
+                return state.getters.getAccessToken
+            },
+            username(){
+                return state.getters.getUsername
+            }
+        },
         methods: {
             logout() {
+                console.log('rozpoczecie wylogowania')
                 state.dispatch('logoutUser')
                     .then(() => {
-                        this.$router.push({name: 'home'})
+                        this.$router.push({name: 'Login'})
                     })
             }
         }

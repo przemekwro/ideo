@@ -3,17 +3,21 @@ import VueRouter, {RouteConfig} from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Search from '../views/Search.vue'
+import state from '../store/index'
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
     {
-        path: '/',
+        path: '/login',
         name: 'Login',
-        component: Login
+        component: Login,
+        meta:{
+            requiresAuth: false
+        }
     },
     {
-        path: '/home',
+        path: '/',
         name: 'Home',
         component: Home,
         meta: {
@@ -35,5 +39,18 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
+
+const openRoutes=['Login','']
+
+
+
+router.beforeEach((to, from, next) => {
+    if (to.name !== 'Login' && !state.getters.checkAccessToken) next({ name: 'Login' })
+    else if (to.name == 'Login' && state.getters.checkAccessToken) next({ name: 'Home' })
+    else next()
+})
+
+
+
 
 export default router
