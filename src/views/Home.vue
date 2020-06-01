@@ -37,7 +37,7 @@
                 cities: sample,
                 show: true,
                 weather: {},
-                cityid:1,
+                cityid:0,
             }
         },
         components: {

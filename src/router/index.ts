@@ -3,7 +3,6 @@ import VueRouter, {RouteConfig} from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Search from '../views/Search.vue'
-import About from '../views/About.vue'
 
 Vue.use(VueRouter)
 
@@ -16,18 +15,19 @@ const routes: Array<RouteConfig> = [
     {
         path: '/home',
         name: 'Home',
-        component: Home
+        component: Home,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/search',
         name: 'Search',
-        component: Search
+        component: Search,
+        meta: {
+            requiresAuth: true
+        }
     },
-    {
-        path: '/about',
-        name: 'about',
-        component: About
-    }
 ]
 
 const router = new VueRouter({

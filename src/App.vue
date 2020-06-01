@@ -1,9 +1,10 @@
 <template>
     <div id="app" class="mb-5">
         <div class="row d-flex justify-content-end nav" style="width:100%">
-            <router-link class="m-2" to="/"> Login</router-link>
-            <router-link class="m-2" to="/search"> Search</router-link>
-            <router-link class="m-2" to="/home"> Home</router-link>
+            <router-link class="m-2" v-if="accessToken!=null" to="/"> Login</router-link>
+            <router-link class="m-2" v-if="accessToken==null" to="/search"> Search</router-link>
+            <router-link class="m-2" v-if="accessToken==null" to="/home"> Home</router-link>
+            <a href="#" v-if="accessToken==null" @click="logout" class="m-2"> Logout </a>
         </div>
         <div class="container d-flex justify-content-center">
             <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut" mode="out-in">
@@ -13,11 +14,32 @@
     </div>
 </template>
 
+<script>
+    import state from '@/store'
+    import {mapState} from 'vuex'
+    export default {
+        name: 'App',
+        computed:mapState(['accessToken'])
+        ,
+        methods: {
+            logout() {
+                state.dispatch('logoutUser')
+                    .then(() => {
+                        this.$router.push({name: 'home'})
+                    })
+            }
+        }
+    }
+
+</script>
+
 <style>
     @import "https://cdn.jsdelivr.net/npm/animate.css@3.5.2";
-    canvas{
+
+    canvas {
         height: 250px;
     }
+
     .content {
         border: 2px solid white;
         border-radius: 20px;
@@ -52,11 +74,13 @@
         font-size: 20px;
         outline: none;
     }
-    button:hover{
-        background:#fff;
+
+    button:hover {
+        background: #fff;
     }
-    button:focus{
-        outline:none;
+
+    button:focus {
+        outline: none;
     }
 
 
@@ -77,6 +101,7 @@
     .router-link-exact-active {
         text-decoration: underline;
     }
+
     ::-webkit-scrollbar-track {
         background: rgba(0, 0, 0, 0.3);
     }

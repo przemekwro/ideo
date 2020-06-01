@@ -12,7 +12,7 @@
             </div>
         </div>
         <div>
-            <line-chart :height="'350px'" :chartData="datacollection" :options="option"></line-chart>
+            <line-chart :height="350" :chartData="datacollection" :options="option"></line-chart>
         </div>
     </div>
 </template>
@@ -27,10 +27,7 @@
         props: ['tempChar', 'humidityChar'],
         data() {
             return {
-                datacollection: null,
-                datacollection2: null,
-                temperature: [],
-                temp: null,
+                datacollection: {},
                 picked: 'temperature',
                 option: {
                     scales: {

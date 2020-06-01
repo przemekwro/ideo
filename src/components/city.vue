@@ -2,9 +2,9 @@
     <div class="city mb-3 mb-2" id="city">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm">
-                <h5 @click="sendCity" id="link">{{weather['name']}}</h5>
+                <h5 @click="setActive" id="link">{{weather['name']}}</h5>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm d-flex justify-content-around">
+            <div v-if="weather" class="col-lg-8 col-md-8 col-sm d-flex justify-content-around">
                 <h6> Temp: {{temperature}} &#8451;</h6>
                 <h6>HR: {{weather['main']['humidity']}}%</h6>
             </div>
@@ -14,19 +14,17 @@
 
 
 <script>
-
     export default {
         name: 'city',
         props: ['city'],
         data() {
             return {
-                weather: {},
-                first:false,
+                weather: false,
                 temperature:0,
             }
         },
         methods: {
-            sendCity() {
+            setActive() {
                 this.$emit('getCity', this.weather['id'])
             },
             getWeather() {
@@ -46,7 +44,6 @@
 
 
 <style scoped>
-
     #link {
         cursor: pointer;
     }
