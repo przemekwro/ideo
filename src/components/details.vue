@@ -1,7 +1,7 @@
 <template>
     <div class="details">
         <div class="mt-4 mb-4">
-            <h3>{{city['name']}}</h3>
+            <h3 v-if="city">{{city['name']}}</h3>
             <div v-if="weather">
                 <img :src="'http://openweathermap.org/img/wn/'+weather['weather'][0]['icon']+'@2x.png'">
                 <div class="row d-flex justify-content-around">
@@ -15,47 +15,53 @@
                     </div>
                 </div>
             </div>
-            <chart2 v-if="loaded" :tempChar="temp" :humidityChar="humidity"/>
+            <chart2 v-if="loaded" :tempChar="temp" :date="date" :humidityChar="humidity" :key="refresh"/>
         </div>
-
     </div>
 </template>
 
 <script>
     import Charts from "@/components/Charts";
+    import state from "@/store"
 
     export default {
         name: 'info',
-        props: ['id'],
+
         data() {
             return {
                 weather: false,
-                temp: [],
-                city: [],
-                humidity: [],
+                temp: false,
+                city: false,
+                humidity: false,
                 loaded: false,
+                refresh:0,
+                date:false,
             }
         },
         computed: {
-            weatherLength() {
-                return this.weather.length
-            }
+            cityid() {
+                return state.getters.getActiveCity
+            },
         },
-        mounted() {
-            console.log('downloading')
-            this.downloadData()
+        mounted(){
+          this.downloadData()
         },
         methods: {
             downloadData() {
-                fetch('http://api.openweathermap.org/data/2.5/forecast?id=' + this.$props['id'] + '&appid=bf808372b634845793e6c3743079f0df')
+                fetch('http://api.openweathermap.org/data/2.5/forecast?id=' + this.cityid + '&appid=bf808372b634845793e6c3743079f0df')
                     .then(response => response.json())
                     .then((data) => {
                         let i
+                        this.temp = []
+                        this.humidity = []
                         this.city = data['city']
+                        this.date = []
+                        console.log('city'+this.city)
                         this.weather = data['list'][0]
                         for (i in data['list']) {
                             this.temp.push(Math.round(data['list'][i]['main']['temp'] - 273))
                             this.humidity.push(data['list'][i]['main']['humidity'])
+                            this.date.push(data['list'][i]['dt_txt'])
                         }
                         this.loaded = true
                     })
@@ -64,12 +70,33 @@
         components: {
             'chart2': Charts,
         },
+        watch: {
+            cityid() {
+                if(this.cityid === 0) return null
+                this.updated=false
+                fetch('http://api.openweathermap.org/data/2.5/forecast?id=' + this.cityid + '&appid=bf808372b634845793e6c3743079f0df')
+                    .then(response => response.json())
+                    .then((data) => {
+                        let i
+                        this.temp = []
+                        this.humidity = []
+                        this.date = []
+                        this.city = data['city']
+                        this.weather = data['list'][0]
+                        for (i in data['list']) {
+                            this.temp.push(Math.round(data['list'][i]['main']['temp'] - 273))
+                            this.humidity.push(data['list'][i]['main']['humidity'])
+                            this.date.push(data['list'][i]['dt_txt'])
+                        }
+                        this.refresh = this.cityid
+                        this.loaded = true
+                    })
+            }
+        },
     }
 </script>
 
 
 <style scoped>
-    a {
-        color: #42b983;
-    }
+
 </style>

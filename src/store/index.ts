@@ -6,22 +6,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        /*
-        * accessToken: localStorage.getItem('access_token') || null, // makes sure the user is logged in even after
-        // refreshing the page
-        refreshToken: localStorage.getItem('refresh_token') || null,
-        *
-        *
-        * */
         accessToken: localStorage.getItem('access_token') || null, // makes sure the user is logged in even after
         // refreshing the page
         refreshToken: localStorage.getItem('refresh_token') || null,
-        username:'',
+        username:localStorage.getItem('username') || '',
+        activeCity:0,
     },
     mutations: {
         updateLocalStorage (state, { access, refresh , username}) {
             localStorage.setItem('access_token', access)
             localStorage.setItem('refresh_token', refresh)
+            localStorage.setItem('username', username)
             state.accessToken = access
             state.refreshToken = refresh
             state.username = username
@@ -30,6 +25,9 @@ export default new Vuex.Store({
         destroyToken (state) {
             state.accessToken = null
             state.refreshToken = null
+        },
+        setActive(state, cityId){
+            state.activeCity = cityId
         }
     },
     getters: {
@@ -47,6 +45,9 @@ export default new Vuex.Store({
         },
         getUsername(state){
             return state.username
+        },
+        getActiveCity(state){
+            return state.activeCity
         }
     },
     actions: {
@@ -72,11 +73,13 @@ export default new Vuex.Store({
                         .then(response => {
                             localStorage.removeItem('access_token')
                             localStorage.removeItem('refresh_token')
+                            localStorage.removeItem('username')
                             context.commit('destroyToken',)
                         })
                         .catch(err => {
                             localStorage.removeItem('access_token')
                             localStorage.removeItem('refresh_token')
+                            localStorage.removeItem('username')
                             context.commit('destroyToken')
                             resolve(err)
                         })

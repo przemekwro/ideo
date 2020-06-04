@@ -4,39 +4,41 @@
             <div class="col-lg-7 left  home mb-3">
                 <h3 class="mb-3 mt-2">Your Cities:</h3>
                 <div id="list_cities">
-                    <div id="cities_list" v-for="(city) in cities" :key="city.id">
-                        <city :city="city" @getCity="setActive"></city>
+                    <div id="cities_list" v-for="(city) in cities" :key="city.cityId">
+                        <city :cityId="city['cityId']"></city>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center m-2">
                     <span>
-                        &copy; Wrona Przemyslaw
+                        &copy; Wrona Przemyslaw {{cityid}}
                     </span>
                 </div>
             </div>
             <div class="col-lg-5 " id="details">
-                <transition name="fade" mode="out-in" v-if="show">
-                    <detail :id="cityid"></detail>
-                </transition>
+                <detail></detail>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
     import detail from "@/components/details";
     import city from "@/components/city";
+    import axios from 'axios';
+    import state from '@/store'
     import sample from '../assets/sample.json'
 
     export default {
         name: 'Home',
         data() {
             return {
-                cities: sample,
-                show: true,
+                cities: {},
                 weather: {},
-                cityid:0,
+            }
+        },
+        computed: {
+            cityid() {
+                return state.getters.getActiveCity
             }
         },
         components: {
@@ -44,23 +46,19 @@
             'city': city,
         },
         methods: {
-            setActive(id) {
-                setTimeout(() => {
-                    this.show = false
-                }, 0);
-                setTimeout(() => {
-                    this.cityid = id
-                    this.show=true
-                }, 1000);
-
+            getCity() {
+                axios.get('http://127.0.0.1:8000/city/?cityOwner=' + state.getters.getUsername).then(data => {
+                    state.commit('setActive', data['data'][0]['cityId'])
+                    this.cities = data['data']
+                })
             },
         },
-        created(){
-          this.cityid = this.cities[0]['id']
+        mounted() {
+            this.getCity()
         },
-        mounted () {
-            //this.setActive(this.weather)
-        },
+        created() {
+            this.getCity()
+        }
     }
 
 </script>
@@ -71,10 +69,8 @@
             border-top-right-radius: 17px;
             border-bottom-right-radius: 17px;
         }
-        .home{
 
-        }
-        #list_cities{
+        #list_cities {
             max-height: 570px;
             min-height: 570px;
         }
@@ -85,18 +81,18 @@
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
         }
-        .home{
+
+        .home {
             min-height: 600px;
         }
     }
 
-    #details{
+    #details {
         color: #fff;
-        background: rgba(0,72,87,0.5);
+        background: rgba(0, 72, 87, 0.5);
     }
 
     #list_cities {
-
         overflow-x: hidden;
         overflow-y: auto;
     }

@@ -24,7 +24,9 @@
         components: {
             LineChart
         },
-        props: ['tempChar', 'humidityChar'],
+        props: ['tempChar', 'humidityChar','date'],
+        computed:{
+        },
         data() {
             return {
                 datacollection: {},
@@ -36,7 +38,7 @@
                                 fontColor: "white",
                             },
                             gridLines: {
-                                zeroLineColor: '#ffcc33',
+                                zeroLineColor: 'rgb(146, 217, 244)',
                                 color:'#white',
                             }
                         }],
@@ -45,12 +47,16 @@
                                 fontColor: "white",
                                 fontSize: 14,
                                 stepSize: 1,
-                                beginAtZero: true
+                                beginAtZero: true,
+                                autoSkip: true,
+                                maxTicksLimit: 7,
+
                             },
                             gridLines: {
                                 zeroLineColor: '#white',
                                 color:'#white',
-                            }
+                            },
+
                         }]
                     },
                 },
@@ -63,7 +69,7 @@
             fillData() {
                 this.datacollection = {
                     type: 'line',
-                    labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',],
+                    labels: this.$props['date'],
                     datasets: [
                         {
                             label: 'Temp',
@@ -83,7 +89,7 @@
                 if (newPicked == 'temperature' && newPicked != oldPicked) {
                     this.datacollection = {
                         type: 'line',
-                        labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',],
+                        labels: this.$props['date'],
                         datasets: [
                             {
                                 label: 'Temp',
@@ -99,7 +105,7 @@
                 } else if (newPicked == 'humidity' && newPicked != oldPicked) {
                     this.datacollection = {
                         type: 'line',
-                        labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',],
+                        labels:this.$props['date'],
                         datasets: [
                             {
                                 label: 'Humidity',
@@ -143,12 +149,16 @@
         font-weight: bold;
         padding: 5px 20px;
     }
+    label:hover{
+        background: rgba(0, 0, 0, 0.3);
+    }
 
     input[type=radio]:checked + label {
         color: black;
         background: rgba(0, 0, 0, 0.8);
         color: #fff;
     }
+
 
     .small {
         max-width: 100px;

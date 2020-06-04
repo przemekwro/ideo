@@ -1,7 +1,6 @@
 <template>
     <div id="app" class="mb-5">
         <div class="row d-flex justify-content-end nav" style="width:100%">
-            <router-link class="m-2" v-if="!accessToken" to="/login"> Login</router-link>
             <router-link class="m-2" v-if="accessToken" to="/search"> Search</router-link>
             <router-link class="m-2" v-if="accessToken" to="/"> Home</router-link>
             <a href="#" v-if="accessToken" @click="logout" class="m-2"> Logout {{username}} </a>
@@ -81,12 +80,13 @@
         outline: none;
     }
 
-    button:hover {
+    input:hover,button:hover {
         background: #fff;
     }
 
-    button:focus {
+    input:focus,button:focus {
         outline: none;
+        background: #fff;
     }
 
 

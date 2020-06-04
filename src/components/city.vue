@@ -14,9 +14,11 @@
 
 
 <script>
+    import state from '@/store'
+
     export default {
         name: 'city',
-        props: ['city'],
+        props: ['cityId'],
         data() {
             return {
                 weather: false,
@@ -25,20 +27,24 @@
         },
         methods: {
             setActive() {
-                this.$emit('getCity', this.weather['id'])
+                state.commit('setActive',this.weather['id'])
             },
             getWeather() {
-                fetch('http://api.openweathermap.org/data/2.5/weather?id=' + this.$props['city'].id + '&appid=bf808372b634845793e6c3743079f0df')
+                console.log('downloading data')
+                fetch('http://api.openweathermap.org/data/2.5/weather?id=' + this.$props['cityId'] + '&appid=bf808372b634845793e6c3743079f0df')
                     .then(response => response.json())
                     .then((data)=>{
                         this.weather = data;
-                        this.temperature = Math.round(data['main']['temp'] - 273.15)
+                        this.temperature = Math.round((data['main']['temp'] - 273.15)*100)/100
                     })
             }
         },
         mounted() {
             this.getWeather()
         },
+        created(){
+            window.setInterval(this.getWeather,60000)
+        }
     }
 </script>
 
@@ -49,7 +55,7 @@
     }
 
     #link:hover {
-        color: #89DAFF;
+        color: rgba(0, 126, 138, 1);
         text-decoration: underline;
     }
 

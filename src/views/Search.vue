@@ -10,40 +10,35 @@
         <div class="searchResult mb-3">
             <div v-if="cityFilteredList.length!=0">
                 <div id="cities" class="container" v-for="city in cityFilteredList" v-bind:key="city.id">
-                    <div class="row d-flex justify-content-center">
-                        <h5>{{city.name}}</h5>
-                    </div>
-                    <div class="row d-flex justify-content-center">
-                        <h6>{{city.coord.lon}}</h6>
-                        <h6>{{city.coord.lat}}</h6>
-                    </div>
+                    <city-add :city="city"></city-add>
                     <hr>
                 </div>
             </div>
             <div v-else>
-                <div v-if="searched"><p>Not found </p></div>
+                <div v-if="searchResult"><p>Not found </p></div>
             </div>
         </div>
     </div>
 </template>
 <script>
+    import cityAdd from '@/components/cityAdd'
 
     export default {
         name: 'Details',
         data: () => ({
-            absolute: true,
-            opacity: 1,
-            overlay: false,
             searchField: '',
             cities: '',
-            searched:false,
-            cityFilteredList: [],
+            searchResult:false,
+            cityFilteredList: false,
         }),
+        components:{
+            'cityAdd':cityAdd
+        },
         methods: {
             search() {
                 let i
                 this.cityFilteredList = []
-                this.searched=true
+                this.searchResult=true
                 for (i in this.cities) {
                     if (this.cities[i].name.toLowerCase().includes(this.searchField.toLowerCase())) {
                         this.cityFilteredList.push(this.cities[i])
@@ -64,7 +59,6 @@
 
 
 <style scoped>
-    @import "https://cdn.jsdelivr.net/npm/animate.css@3.5.2";
 
     .searchResult{
         max-height: 60vh;
