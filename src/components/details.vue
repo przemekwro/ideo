@@ -3,7 +3,7 @@
         <div class="mt-4 mb-4">
             <h3 v-if="city">{{city['name']}}</h3>
             <div v-if="weather">
-                <img :src="'http://openweathermap.org/img/wn/'+weather['weather'][0]['icon']+'@2x.png'">
+                <img class="img" :src="'http://openweathermap.org/img/wn/'+weather['weather'][0]['icon']+'@2x.png'">
                 <div class="row d-flex justify-content-around">
                     <div>
                         <h5>Temp: {{temp[0]}} &#8451;</h5>
@@ -98,5 +98,8 @@
 
 
 <style scoped>
+    .img{
+        min-height: 100px;
+    }
 
 </style>

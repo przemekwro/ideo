@@ -32,11 +32,12 @@
         props: ['city'],
         methods: {
             observe() {
-                axios.post('http://127.0.0.1:8000/city/', {
+                axios.post('http://127.0.0.1:8000/city2/', {
                     cityId: this.$props['city']['id'],
                     cityOwner: state.getters.getUsername,
                 }).then(response =>{
                     console.log(response)
+                    this.$router.push('/')
                 }).catch(error =>{
                     console.log(error)
                 })
