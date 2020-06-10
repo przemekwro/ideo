@@ -100,7 +100,7 @@
         display: inline-block;
         position: absolute;
         top: 45%;
-        left: 50%;
+        left: 45%;
         width: 80px;
         height: 80px;
         z-index: 3;

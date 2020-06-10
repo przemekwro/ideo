@@ -6,7 +6,7 @@
             <a href="#" v-if="accessToken" @click="logout" class="m-2"> Logout {{username}} </a>
         </div>
         <div class="container d-flex justify-content-center">
-            <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut" mode="out-in">
+            <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut" mode="out-in" appear>
                 <router-view/>
             </transition>
         </div>

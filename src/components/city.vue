@@ -18,7 +18,7 @@
 
     export default {
         name: 'city',
-        props: ['cityId'],
+        props: ['cityId','search'],
         data() {
             return {
                 weather: false,
