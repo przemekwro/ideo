@@ -50,6 +50,8 @@
                                 beginAtZero: true,
                                 autoSkip: true,
                                 maxTicksLimit: 7,
+                                maxRotation: 45,
+                                minRotation: 45,
 
                             },
                             gridLines: {
