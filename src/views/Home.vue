@@ -2,7 +2,10 @@
     <div class="container content home">
         <div class="row ">
             <div class="col-lg-7 left  home mb-3">
-                <h3 class="mb-3 mt-2">Your Cities:</h3>
+                <div class="row mt-1 d-flex justify-content-between">
+                    <h3 class="mb-3 ml-3 mt-2">Your Cities:</h3>
+
+                </div>
                 <div id="list_cities">
                     <div id="cities_list" v-for="(city) in cities" :key="city.cityId">
                         <city :cityId="city['cityId']"></city>
@@ -34,12 +37,13 @@
             return {
                 cities: {},
                 weather: {},
+                search: '',
             }
         },
         computed: {
             cityid() {
                 return state.getters.getActiveCity
-            }
+            },
         },
         components: {
             'detail': detail,
@@ -48,13 +52,10 @@
         methods: {
             getCity() {
                 axios.get('http://127.0.0.1:8000/city/?cityOwner=' + state.getters.getUsername).then(data => {
-                    state.commit('setActive', data['data'][0]['cityId'])
+                    if(state.getters.getActiveCity == 0) state.commit('setActive', data['data'][0]['cityId'])
                     this.cities = data['data']
                 })
             },
-        },
-        mounted() {
-            this.getCity()
         },
         created() {
             this.getCity()
@@ -103,6 +104,13 @@
     }
 
     h3 {
+        text-align: left;
+    }
+
+    input {
+        height: 30px;
+        background: rgba(255, 255, 255, 0.8);
+        color: black;
         text-align: left;
     }
 </style>

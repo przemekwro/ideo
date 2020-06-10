@@ -2,11 +2,11 @@
     <div class="city mb-3 mb-2" id="city">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm">
-                <h5 @click="setActive" id="link">{{weather['name']}}</h5>
+                <p @click="setActive" id="link">{{weather['name']}}</p>
             </div>
             <div v-if="weather" class="col-lg-8 col-md-8 col-sm d-flex justify-content-around">
-                <h6> Temp: {{temperature}} &#8451;</h6>
-                <h6>HR: {{weather['main']['humidity']}}%</h6>
+                <p> Temp: {{temperature}} &#8451;</p>
+                <p>HR: {{weather['main']['humidity']}}%</p>
             </div>
         </div>
     </div>
@@ -52,6 +52,7 @@
 <style scoped>
     #link {
         cursor: pointer;
+        font-weight: bold;
     }
 
     #link:hover {
