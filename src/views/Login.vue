@@ -5,7 +5,7 @@
         <div v-if="wrongCred">
             Wrong login or password!
         </div>
-        <form v-on:submit.prevent="loginUser">
+        <form v-on:submit.prevent="loginUser2">
             <div class="row m-2">
                 <input v-model="username" placeholder="login" class="rounded p-1">
             </div>
@@ -19,6 +19,8 @@
 
 
 <script>
+    import users from '../../public/users.json'
+    import state from '@/store'
 
     export default {
         name: 'Login',
@@ -27,10 +29,29 @@
                 username: '',
                 password: '',
                 wrongCred:false,
+                users: users,
             }
         },
         methods: {
-            loginUser() { // call loginUSer action
+            // logowanie bez API
+            loginUser2(){
+                let find = false
+                let i
+                for(i in this.users['users'] ) {
+                    if(this.username == users['users'][i]['username'] && this.password == users['users'][i]['password']){
+                        state.dispatch('login',{username:this.username,cityList: users['users'][i]['cityList']})
+                            .then(()=>{
+                            this.$router.push({name: 'Home'})
+                        })
+                        find = true
+                        break
+                    }
+                }
+                if(find === false)
+                    this.wrongCred = true
+            },
+            //logowanie z api
+            loginUser() {
                 this.$store.dispatch('loginUser', {
                     username: this.username,
                     password: this.password
@@ -41,7 +62,7 @@
                     })
                     .catch(err => {
                         console.log(err)
-                        this.wrongCred = true // if the credentials were wrong set wrongCred to true
+                        this.wrongCred = true
                     })
             }
         },

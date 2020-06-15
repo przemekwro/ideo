@@ -23,7 +23,7 @@
 </template>
 
 
-<script>
+<script lang="js">
     import state from '@/store'
     import axios from 'axios'
 
@@ -57,5 +57,4 @@
         color: #89DAFF;
         text-decoration: underline;
     }
-
 </style>

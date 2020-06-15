@@ -18,7 +18,7 @@
 
     export default {
         name: 'city',
-        props: ['cityId','search'],
+        props: ['cityId'],
         data() {
             return {
                 weather: false,
@@ -30,7 +30,6 @@
                 state.commit('setActive',this.weather['id'])
             },
             getWeather() {
-                console.log('downloading data')
                 fetch('http://api.openweathermap.org/data/2.5/weather?id=' + this.$props['cityId'] + '&appid=bf808372b634845793e6c3743079f0df')
                     .then(response => response.json())
                     .then((data)=>{
@@ -59,5 +58,4 @@
         color: rgba(0, 126, 138, 1);
         text-decoration: underline;
     }
-
 </style>

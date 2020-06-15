@@ -1,0 +1,34 @@
+{
+   "users":[
+      {
+         "username":"user1",
+         "password":"123",
+         "cityList":[
+            3088171,
+            7530976,
+            7533348,
+            759591
+         ]
+      },
+      {
+         "username":"user2",
+         "password":"qwe",
+         "cityList":[
+			3088171,
+            7530976,
+            7533348,
+            759591,
+			4915533,
+			2021532,
+			292224,
+			4792273
+         ]
+      },
+      {
+         "username":"user3",
+         "password":"asd",
+         "cityList":[
+         ]
+      }
+   ]
+}

@@ -48,6 +48,7 @@
         },
         methods: {
             downloadData() {
+                if(this.cityid == 0) return null
                 fetch('http://api.openweathermap.org/data/2.5/forecast?id=' + this.cityid + '&appid=bf808372b634845793e6c3743079f0df')
                     .then(response => response.json())
                     .then((data) => {
@@ -56,7 +57,6 @@
                         this.humidity = []
                         this.city = data['city']
                         this.date = []
-                        console.log('city'+this.city)
                         this.weather = data['list'][0]
                         for (i in data['list']) {
                             this.temp.push(Math.round(data['list'][i]['main']['temp'] - 273))
@@ -72,8 +72,6 @@
         },
         watch: {
             cityid() {
-                if(this.cityid === 0) return null
-                this.updated=false
                 fetch('http://api.openweathermap.org/data/2.5/forecast?id=' + this.cityid + '&appid=bf808372b634845793e6c3743079f0df')
                     .then(response => response.json())
                     .then((data) => {
@@ -101,5 +99,4 @@
     .img{
         min-height: 100px;
     }
-
 </style>

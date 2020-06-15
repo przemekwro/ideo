@@ -45,8 +45,8 @@ const openRoutes=['Login','']
 
 
 router.beforeEach((to, from, next) => {
-    if (to.name !== 'Login' && !state.getters.checkAccessToken) next({ name: 'Login' })
-    else if (to.name == 'Login' && state.getters.checkAccessToken) next({ name: 'Home' })
+    if (to.name != 'Login' && state.getters.getUsername=='') next({ name: 'Login' })
+    else if (to.name == 'Login' && state.getters.getUsername!='') next({ name: 'Home' })
     else next()
 })
 

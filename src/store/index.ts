@@ -6,51 +6,41 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        accessToken: localStorage.getItem('access_token') || null, // makes sure the user is logged in even after
-        // refreshing the page
-        refreshToken: localStorage.getItem('refresh_token') || null,
         username:localStorage.getItem('username') || '',
         activeCity:0,
     },
     mutations: {
-        updateLocalStorage (state, { access, refresh , username}) {
-            localStorage.setItem('access_token', access)
-            localStorage.setItem('refresh_token', refresh)
-            localStorage.setItem('username', username)
-            state.accessToken = access
-            state.refreshToken = refresh
-            state.username = username
 
-        },
-        destroyToken (state) {
-            state.accessToken = null
-            state.refreshToken = null
-        },
         setActive(state, cityId){
             state.activeCity = cityId
+        },
+
+        logIn(state,{username}){
+            state.username = username
+            localStorage.setItem('username', username)
+        },
+
+        logoutUser(state){
+            state.username = ''
         }
+
     },
     getters: {
-        checkAccessToken(state){
-            if(state.accessToken === null )
-                return false
-            else
-                return true
-        },
-        getAccessToken(state){
-            return state.accessToken
-        },
-        loggedIn (state) {
-            return state.accessToken != null
-        },
         getUsername(state){
             return state.username
         },
+
         getActiveCity(state){
             return state.activeCity
-        }
+        },
     },
     actions: {
+        login(context, credentials){
+            context.commit('logIn', {
+                username: credentials.username,
+            })
+        },
+
         loginUser (context, credentials) {
             return new Promise((resolve, reject) => {
                 axios.post('http://127.0.0.1:8000/api/token/', {
@@ -58,7 +48,11 @@ export default new Vuex.Store({
                     password: credentials.password
                 })
                     .then(response => {
-                        context.commit('updateLocalStorage', { access: response.data.access, refresh: response.data.refresh, username:credentials.username }) // store the access and refresh token in localstorage
+                        context.commit('updateLocalStorage', {
+                            access: response.data.access,
+                            refresh: response.data.refresh,
+                            username:credentials.username
+                        })
                         resolve()
                     })
                     .catch(err => {
@@ -66,6 +60,12 @@ export default new Vuex.Store({
                     })
             })
         },
+
+        logoutUser2(context){
+            context.commit('logoutUser')
+            localStorage.removeItem('username')
+        },
+
         logoutUser (context) {
             if (context.getters.loggedIn) {
                 return new Promise((resolve) => {

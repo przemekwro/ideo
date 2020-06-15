@@ -46,7 +46,7 @@
     import cityAdd from '@/components/cityAdd'
 
     export default {
-        name: 'Details',
+        name: 'Search',
         data: () => ({
             searchField: '',
             cities: '',
@@ -70,7 +70,7 @@
                 this.searchField = ''
             }
         },
-        //fast load big data to app
+        //async load data
         async mounted() {
             await import("@/assets/city.list.json").then(({default: json}) => {
                 this.cities = json;
@@ -83,8 +83,6 @@
 
 
 <style scoped>
-
-
     #overlay {
         top: 0;
         left: 0;
@@ -95,6 +93,38 @@
         position: absolute;
     }
 
+    .searchResult{
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    h6:nth-child(1) {
+        border-right: 1px solid white;
+        margin-right: 3px;
+        padding-right: 3px;
+        cursor: pointer;
+    }
+
+    hr {
+        background-color: #fff;
+    }
+
+    .modal-body .row div:last-child hr {
+        display: none;
+    }
+
+    button {
+        width: inherit;
+        text-decoration: none;
+        border: none;
+    }
+
+    button:focus {
+        outline: 0;
+    }
+
+
+   /* animacja przy ladowaniu search  */
 
     .lds-roller {
         display: inline-block;
@@ -203,42 +233,4 @@
         }
     }
 
-    .searchResult{
-        max-height: 60vh;
-        overflow-y: auto;
-    }
-
-    h6:nth-child(1) {
-        border-right: 1px solid white;
-        margin-right: 3px;
-        padding-right: 3px;
-        cursor: pointer;
-    }
-
-    hr {
-        background-color: #fff;
-    }
-
-    .modal-body .row div:last-child hr {
-        display: none;
-    }
-
-    button {
-        width: inherit;
-        text-decoration: none;
-        border: none;
-    }
-
-    button:focus {
-        outline: 0;
-    }
-
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
-    }
-
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-    {
-        opacity: 0;
-    }
 </style>

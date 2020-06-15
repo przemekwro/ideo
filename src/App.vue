@@ -1,9 +1,9 @@
 <template>
     <div id="app" class="mb-5">
         <div class="row d-flex justify-content-end nav" style="width:100%">
-            <router-link class="m-2" v-if="accessToken" to="/search"> Search</router-link>
-            <router-link class="m-2" v-if="accessToken" to="/"> Home</router-link>
-            <a href="#" v-if="accessToken" @click="logout" class="m-2"> Logout {{username}} </a>
+            <router-link class="m-2" v-if="loggedIn" to="/search"> Search</router-link>
+            <router-link class="m-2" v-if="loggedIn" to="/"> Home</router-link>
+            <a href="#" v-if="loggedIn" @click="logout" class="m-2"> Logout {{username}} </a>
         </div>
         <div class="container d-flex justify-content-center">
             <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut" mode="out-in" appear>
@@ -18,8 +18,11 @@
     export default {
         name: 'App',
         computed:{
-            accessToken(){
-                return state.getters.getAccessToken
+            loggedIn(){
+                if( state.getters.getUsername === '')
+                    return false
+                else
+                    return true
             },
             username(){
                 return state.getters.getUsername
@@ -27,8 +30,7 @@
         },
         methods: {
             logout() {
-                console.log('rozpoczecie wylogowania')
-                state.dispatch('logoutUser')
+                state.dispatch('logoutUser2')
                     .then(() => {
                         this.$router.push({name: 'Login'})
                     })
