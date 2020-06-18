@@ -9,9 +9,9 @@
                     <span>No cities. You can observe your city <a :href="'search'">here</a>. </span>
                 </div>
                 <div id="list_cities" v-if="loaded">
-                    <div id="cities_list" v-for="(city) in cities" :key="city.cityId">
-                        <city  :search="search" :cityId="city"></city>
-                    </div>
+                    <transition-group name="slide-in" :style="{ '--total': cities.length }" appear>
+                        <city id="city_list" v-for="(city,i) in cities" :key="i" :style="{'--i': i}" :cityId="city"></city>
+                    </transition-group>
                 </div>
                 <div class="d-flex justify-content-center m-2">
                     <span>
@@ -58,6 +58,7 @@
         methods: {
             getCity() {
                 axios.get('../users.json').then(data => {
+                    console.log('asd')
                     let i
                     const username = state.getters.getUsername
                     for(i in data['data']["users"] ) {
@@ -110,6 +111,7 @@
     #list_cities {
         overflow-x: hidden;
         overflow-y: auto;
+        width: 100%;
     }
 
 
@@ -127,4 +129,32 @@
         color: black;
         text-align: left;
     }
+
+    /* animacja listy  */
+    .slide-in-move {
+        transition: opacity .5s linear, transform .5s ease-in-out;
+    }
+
+    .slide-in-leave-active {
+        transition: opacity 0.4s linear, transform 0.4s cubic-bezier(0.5, 0, 0.7, 0.4);
+        transition-delay: calc( 0.15s * (var(--total) - var(--i)));
+    }
+
+    .slide-in-enter-active {
+        transition: opacity 0.5s linear, transform 0.5s cubic-bezier(0.2, 0.5, 0.1, 1);
+        transition-delay: calc( 0.15s * var(--i));
+    }
+
+    .slide-in-enter, .slide-in-leave-to {
+        opacity: 0;
+    }
+
+    .slide-in-enter {
+        transform: translateX(-1em);
+    }
+
+    .slide-in-leave-to {
+        transform: translateX(1em);
+    }
+
 </style>

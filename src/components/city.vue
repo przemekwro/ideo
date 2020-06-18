@@ -1,7 +1,7 @@
 <template>
     <div class="city mb-3 mb-2" id="city">
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm">
+            <div id="divLink" class="col-lg-4 col-md-4 col-sm">
                 <p @click="setActive" id="link">{{weather['name']}}</p>
             </div>
             <div v-if="weather" class="col-lg-8 col-md-8 col-sm d-flex justify-content-around">
@@ -52,10 +52,12 @@
     #link {
         cursor: pointer;
         font-weight: bold;
+        user-select: none;
     }
 
     #link:hover {
         color: rgba(0, 126, 138, 1);
         text-decoration: underline;
     }
+
 </style>

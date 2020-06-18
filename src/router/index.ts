@@ -3,6 +3,7 @@ import VueRouter, {RouteConfig} from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Search from '../views/Search.vue'
+import Asd from '../views/ASD.vue'
 import state from '../store/index'
 
 Vue.use(VueRouter)
